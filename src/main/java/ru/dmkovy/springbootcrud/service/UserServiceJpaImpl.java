@@ -16,18 +16,22 @@ public class UserServiceJpaImpl implements UserServiceJpa {
         this.userDaoJpa = userDaoJpa;
     }
 
+    @Override
     public User findById(Long id) {
         return userDaoJpa.getReferenceById(id);
     }
 
+    @Override
     public List<User> findAll() {
         return userDaoJpa.findAll();
     }
 
+    @Override
     public void saveUser(User user) {
         userDaoJpa.save(user);
     }
 
+    @Override
     public void deleteById(Long id) {
         userDaoJpa.deleteById(id);
     }
