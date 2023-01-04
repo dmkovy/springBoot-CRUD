@@ -4,34 +4,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.dmkovy.springbootcrud.service.UserServiceJpa;
+import ru.dmkovy.springbootcrud.service.UserService;
 import ru.dmkovy.springbootcrud.model.User;
 
 @Controller
 public class UserController {
 
-    private final UserServiceJpa userServiceJpa;
+    private final UserService userService;
 
     @Autowired
-    public UserController(UserServiceJpa userServiceJpa) {
-        this.userServiceJpa = userServiceJpa;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/")
     public String printAllUsers(Model model) {
-        model.addAttribute("users", userServiceJpa.findAll());
+        model.addAttribute("users", userService.getAllUsers());
         return "users";
     }
 
     @GetMapping(value = "/edit/{id}")
     public String showEditUser(@PathVariable("id") long id, Model model) {
-        model.addAttribute("user", userServiceJpa.findById(id));
+        model.addAttribute("user", userService.getUserById(id));
         return "edit";
     }
 
     @PatchMapping(value = "/edit")
     public String editUser(@ModelAttribute("user") User user) {
-        userServiceJpa.saveUser(user);
+        userService.updateUser(user);
         return "redirect:/";
     }
 
@@ -43,13 +43,13 @@ public class UserController {
 
     @PostMapping(value = "/save")
     public String saveUser(@ModelAttribute("user") User user) {
-        userServiceJpa.saveUser(user);
+        userService.saveUser(user);
         return "redirect:/";
     }
 
     @DeleteMapping(value = "/delete/{id}")
     public String deleteUser(@PathVariable("id") long id) {
-        userServiceJpa.deleteById(id);
+        userService.removeUserById(id);
         return "redirect:/";
     }
 }
